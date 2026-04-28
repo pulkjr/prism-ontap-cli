@@ -303,6 +303,45 @@ node2   0a       online 20:00:00:a0:98:0c:b0:ec  20:01:00:a0:98:0c:b0:ec
 3 entries were displayed.</code></pre>
     </section>
 
+    <!-- ── Example 8: Network interface create ───────────────────────── -->
+    <section>
+      <h2>Network interface create <span class="badge">IP address + subnet mask</span></h2>
+      <p class="desc">
+        Creating a LIF with an IPv4 address and netmask. Both the address and
+        netmask are highlighted as IP tokens, distinct from parameter flags and
+        plain values.
+      </p>
+<pre><code class="language-ontap-cli">cluster1::> network interface create -vserver vs1 -lif data_lif3 -role data -data-protocol nfs -home-node node1 -home-port e0a -address 192.168.1.102 -netmask 255.255.255.0 -status-admin up
+
+cluster1::> network interface show -vserver vs1 -lif data_lif3
+            Logical    Status     Network            Current       Current Is
+Vserver     Interface  Admin/Oper Address/Mask       Node          Port    Home
+----------- ---------- ---------- ------------------ ------------- ------- ----
+vs1         data_lif3    up/up    192.168.1.102/24   node1         e0a     true
+1 entry was displayed.</code></pre>
+    </section>
+
+    <!-- ── Example 9: igroup create + add initiator ───────────────────── -->
+    <section>
+      <h2>igroup create <span class="badge">WWPN initiators</span></h2>
+      <p class="desc">
+        Creating a Fibre Channel initiator group and adding WWPN initiators.
+        WWPN values are highlighted in cyan, the same as IP addresses.
+      </p>
+<pre><code class="language-ontap-cli">cluster1::> igroup create -vserver vs1 -igroup igroup1 -protocol fcp -ostype vmware
+
+cluster1::> igroup add -vserver vs1 -igroup igroup1 -initiator 21:00:00:24:ff:4a:bc:de
+
+cluster1::> igroup add -vserver vs1 -igroup igroup1 -initiator 21:00:00:24:ff:4a:bc:df
+
+cluster1::> igroup show -vserver vs1 -igroup igroup1
+Vserver   Igroup     Protocol OS Type  Initiators
+--------- ---------- -------- -------- ------------------------------------
+vs1       igroup1    fcp      vmware   21:00:00:24:ff:4a:bc:de
+                                       21:00:00:24:ff:4a:bc:df
+1 entry was displayed.</code></pre>
+    </section>
+
     <!-- ── Token color legend ─────────────────────────────────────────── -->
     <section>
       <h2>Token legend</h2>
