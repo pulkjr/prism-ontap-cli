@@ -81,9 +81,16 @@ export default function defineOntapCli(Prism) {
             // Boolean / operational-state keywords.
             'ontap-boolean': /\b(?:true|false|yes|no|up|down|enabled|disabled|online|offline|pending|success|error|available|unavailable)\b/i,
 
-            // IPv4 addresses, with optional CIDR prefix or wildcard last octet.
-            // e.g. 10.60.250.79, 192.168.1.0/24, 10.60.*
-            'ontap-ip': /\b(?:\d{1,3}\.){3}(?:\d{1,3}(?:\/\d{1,2})?|\*)\b/,
+            // MAC addresses (must precede ontap-ip to avoid colon-hex ambiguity).
+            // Colon:  00:50:56:aa:bb:cc
+            // Dash:   00-50-56-aa-bb-cc
+            // Cisco:  0050.56aa.bbcc
+            'ontap-mac': /\b(?:[0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}\b|\b(?:[0-9a-fA-F]{2}-){5}[0-9a-fA-F]{2}\b|\b(?:[0-9a-fA-F]{4}\.){2}[0-9a-fA-F]{4}\b/,
+
+            // IPv4 and IPv6 addresses, with optional CIDR prefix or wildcard last octet.
+            // IPv4: 10.60.250.79, 192.168.1.0/24, 10.60.*
+            // IPv6: 2001:db8::1, fe80::1/64, ::1
+            'ontap-ip': /\b(?:\d{1,3}\.){3}(?:\d{1,3}(?:\/\d{1,2})?|\*)\b|(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}(?:\/\d{1,3})?|(?:[0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}(?:\/\d{1,3})?|(?:[0-9a-fA-F]{1,4}:){1,5}(?::[0-9a-fA-F]{1,4}){1,2}(?:\/\d{1,3})?|(?:[0-9a-fA-F]{1,4}:){1,4}(?::[0-9a-fA-F]{1,4}){1,3}(?:\/\d{1,3})?|(?:[0-9a-fA-F]{1,4}:){1,3}(?::[0-9a-fA-F]{1,4}){1,4}(?:\/\d{1,3})?|(?:[0-9a-fA-F]{1,4}:){1,2}(?::[0-9a-fA-F]{1,4}){1,5}(?:\/\d{1,3})?|[0-9a-fA-F]{1,4}:(?::[0-9a-fA-F]{1,4}){1,6}(?:\/\d{1,3})?|(?:[0-9a-fA-F]{1,4}:){1,7}:(?:\/\d{1,3})?|:(?::[0-9a-fA-F]{1,4}){1,7}(?:\/\d{1,3})?/,
 
             // Storage sizes, e.g. 100GB, 2.5TB, 512MB
             'ontap-size': /\b\d+(?:\.\d+)?[ \t]*(?:KB|MB|GB|TB|PB)\b/i,

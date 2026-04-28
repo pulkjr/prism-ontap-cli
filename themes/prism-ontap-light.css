@@ -84,9 +84,14 @@ pre[class*="language-ontap-cli"] {
   color: #c18401;
 }
 
-/* IPv4 addresses: 10.60.250.79, 192.168.1.0/24 (blue) */
+/* IPv4/IPv6 addresses: 10.60.250.79, 192.168.1.0/24, 2001:db8::1 (blue) */
 .token.ontap-ip {
   color: #0184bc;
+}
+
+/* MAC addresses: 00:50:56:aa:bb:cc, 0050.56aa.bbcc (purple) */
+.token.ontap-mac {
+  color: #a626a4;
 }
 
 /* Storage sizes: 100GB, 2.5TB, 512MB (blue) */

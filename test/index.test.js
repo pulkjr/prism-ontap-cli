@@ -166,6 +166,46 @@ test('IP address is tokenized as ontap-ip', () => {
   assert.equal(ip.text, '10.60.250.79');
 });
 
+test('IPv6 address is tokenized as ontap-ip', () => {
+  const tokens = tokenize('cluster1::> network interface show -address 2001:db8::1');
+  const leaves = collectLeaves(tokens);
+  const ip = leaves.find(l => l.type === 'ontap-ip');
+  assert.ok(ip, 'Should produce an ontap-ip token for IPv6');
+  assert.equal(ip.text, '2001:db8::1');
+});
+
+test('IPv6 address with CIDR is tokenized as ontap-ip', () => {
+  const tokens = tokenize('cluster1::> network interface show -address fd20:8b1e:b255:814e::1/64');
+  const leaves = collectLeaves(tokens);
+  const ip = leaves.find(l => l.type === 'ontap-ip');
+  assert.ok(ip, 'Should produce an ontap-ip token for IPv6 with CIDR');
+  assert.equal(ip.text, 'fd20:8b1e:b255:814e::1/64');
+});
+
+test('MAC address (colon) is tokenized as ontap-mac', () => {
+  const tokens = tokenize('cluster1::> network port show -mac-address 00:50:56:aa:bb:cc');
+  const leaves = collectLeaves(tokens);
+  const mac = leaves.find(l => l.type === 'ontap-mac');
+  assert.ok(mac, 'Should produce an ontap-mac token');
+  assert.equal(mac.text, '00:50:56:aa:bb:cc');
+});
+
+test('MAC address (dash) is tokenized as ontap-mac', () => {
+  const tokens = tokenize('cluster1::> network port show -mac-address 00-50-56-aa-bb-cc');
+  const leaves = collectLeaves(tokens);
+  const mac = leaves.find(l => l.type === 'ontap-mac');
+  assert.ok(mac, 'Should produce an ontap-mac token for dash-notation');
+  assert.equal(mac.text, '00-50-56-aa-bb-cc');
+});
+
+test('MAC address (Cisco dot notation) is tokenized as ontap-mac', () => {
+  const tokens = tokenize('cluster1::> network port show -mac-address 0050.56aa.bbcc');
+  const leaves = collectLeaves(tokens);
+  const mac = leaves.find(l => l.type === 'ontap-mac');
+  assert.ok(mac, 'Should produce an ontap-mac token for Cisco dot notation');
+  assert.equal(mac.text, '0050.56aa.bbcc');
+});
+
 test('storage size is tokenized as ontap-size', () => {
   const tokens = tokenize('cluster1::> volume create vol1 -aggregate aggr1 -size 100GB');
   const leaves = collectLeaves(tokens);
