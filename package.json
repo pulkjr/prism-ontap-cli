@@ -22,7 +22,8 @@
   ],
   "scripts": {
     "test": "node --test test/*.test.js",
-    "lint": "eslint src/ standalone/"
+    "lint": "eslint src/ standalone/",
+    "prepare": "husky"
   },
   "keywords": [
     "prism",
@@ -46,6 +47,8 @@
   "devDependencies": {
     "@eslint/js": "^9.0.0",
     "eslint": "^9.0.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
     "prismjs": "^1.29.0"
   },
   "repository": {
@@ -55,5 +58,8 @@
   "bugs": {
     "url": "https://github.com/pulkjr/prism-ontap-cli/issues"
   },
-  "homepage": "https://github.com/pulkjr/prism-ontap-cli#readme"
+  "homepage": "https://github.com/pulkjr/prism-ontap-cli#readme",
+  "lint-staged": {
+    "*.js": "eslint --max-warnings=0"
+  }
 }
