@@ -50,7 +50,7 @@
 
         // A "-parameter [value]" pair — matched before command name.
         'ontap-param-value': {
-          pattern: /-[a-z][\w.-]*(?:\s+(?!-)(?:"[^"]*"|'[^']*'|\S+(?:\|\S+)*(?:,\s*\S+(?:\|\S+)*)*))?/i,
+          pattern: /(?<!\S)-[a-z][\w.-]*(?:\s+(?!-)(?:"[^"]*"|'[^']*'|\S+(?:\|\S+)*(?:,\s*\S+(?:\|\S+)*)*))?/i,
           inside: {
             'ontap-param': /^-[a-z][\w.-]*/i,
             'ontap-string': {
@@ -69,7 +69,7 @@
 
         // Command name (words after prompt, before first -param).
         'ontap-command': {
-          pattern: /^(\s*)[a-z]+(?:\s+[a-z]+)*/,
+          pattern: /^(\s*)[a-z]+(?:-[a-z]+)*(?:\s+[a-z]+(?:-[a-z]+)*)*/,
           lookbehind: true,
         },
 

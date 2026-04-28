@@ -66,7 +66,7 @@ export default function defineOntapCli(Prism) {
         //   -timestamp "Jul 10 ..."       → param + quoted string
         //   -detail                       → standalone flag (no value)
         'ontap-param-value': {
-          pattern: /-[a-z][\w.-]*(?:\s+(?!-)(?:"[^"]*"|'[^']*'|\S+(?:\|\S+)*(?:,\s*\S+(?:\|\S+)*)*))?/i,
+          pattern: /(?<!\S)-[a-z][\w.-]*(?:\s+(?!-)(?:"[^"]*"|'[^']*'|\S+(?:\|\S+)*(?:,\s*\S+(?:\|\S+)*)*))?/i,
           inside: {
 
             // The flag itself, always at the start of the matched text.
@@ -117,7 +117,7 @@ export default function defineOntapCli(Prism) {
         // This works because ontap-param-value is matched first, leaving only
         // the command name (and whitespace) in the remaining string segments.
         'ontap-command': {
-          pattern: /^(\s*)[a-z]+(?:\s+[a-z]+)*/,
+          pattern: /^(\s*)[a-z]+(?:-[a-z]+)*(?:\s+[a-z]+(?:-[a-z]+)*)*/,
           lookbehind: true,
         },
 

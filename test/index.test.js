@@ -113,6 +113,16 @@ test('multi-word command is tokenized as a single ontap-command', () => {
   assert.equal(cmd.text, 'security audit log show');
 });
 
+test('hyphenated subcommand is fully tokenized as ontap-command', () => {
+  const tokens = tokenize('cluster1::> storage aggregate show-space');
+  const leaves = collectLeaves(tokens);
+  const cmd = leaves.find(l => l.type === 'ontap-command');
+  assert.ok(cmd, 'Should produce an ontap-command token');
+  assert.equal(cmd.text, 'storage aggregate show-space');
+  const param = leaves.find(l => l.type === 'ontap-param');
+  assert.ok(!param, 'Hyphen in command name should not produce an ontap-param token');
+});
+
 test('command is separate from param values', () => {
   const tokens = tokenize('cluster1::> security audit log show -role admin');
   const leaves = collectLeaves(tokens);
