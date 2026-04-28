@@ -1,0 +1,119 @@
+/**
+ * prism-ontap-light.css
+ * Light theme for prism-ontap-cli — One Light palette
+ *
+ * Usage:
+ *   <link rel="stylesheet" href="themes/prism-ontap-light.css" />
+ *
+ * Docusaurus: import this in your Root wrapper or global CSS after loading
+ * the language definition.
+ */
+
+/* ── Base code block styles ─────────────────────────────────────────────── */
+code[class*="language-ontap-cli"],
+pre[class*="language-ontap-cli"] {
+  background: #fafafa;
+  color: #383a42;
+  font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", "SFMono-Regular",
+    Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 0.9em;
+  line-height: 1.6;
+  direction: ltr;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  tab-size: 4;
+  hyphens: none;
+}
+
+pre[class*="language-ontap-cli"] {
+  padding: 1.25em 1.5em;
+  margin: 0.5em 0;
+  overflow: auto;
+  border-radius: 0.5em;
+  border: 1px solid #e1e4e8;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-ontap-cli"] {
+  padding: 0.1em 0.3em;
+  border-radius: 0.3em;
+  white-space: normal;
+  border: 1px solid #e1e4e8;
+}
+
+/* ── Prompt tokens ───────────────────────────────────────────────────────── */
+
+/* Standard prompt: cluster1::>  (medium gray) */
+.token.ontap-prompt {
+  color: #a0a1a7;
+}
+
+/* Elevated prompt: cluster1::*>  (dark, bold — stands out without color) */
+.token.ontap-prompt-elevated {
+  color: #383a42;
+  font-weight: bold;
+}
+
+/* ── Command-line tokens ─────────────────────────────────────────────────── */
+
+/* Command name: volume show, security audit log show (green) */
+.token.ontap-command {
+  color: #50a14f;
+}
+
+/* Parameter flags: -role, -vserver, -state (purple) */
+.token.ontap-param {
+  color: #a626a4;
+}
+
+/* General text values: admin, ssh, node1 (amber/brown) */
+.token.ontap-value {
+  color: #986801;
+}
+
+/* Quoted string values: "Jul 10 12:00:00 2020" (green, italic) */
+.token.ontap-string {
+  color: #50a14f;
+  font-style: italic;
+}
+
+/* Boolean / state values: up, down, true, false, online (dark amber) */
+.token.ontap-boolean {
+  color: #c18401;
+}
+
+/* IPv4 addresses: 10.60.250.79, 192.168.1.0/24 (blue) */
+.token.ontap-ip {
+  color: #0184bc;
+}
+
+/* Storage sizes: 100GB, 2.5TB, 512MB (blue) */
+.token.ontap-size {
+  color: #0184bc;
+}
+
+/* Numeric values: 5, 100, 3.14 (amber/brown) */
+.token.ontap-number {
+  color: #986801;
+}
+
+/* ── Output tokens ────────────────────────────────────────────────────────── */
+
+/* Column separator line: --- --- --- (light gray) */
+.token.ontap-output-separator {
+  color: #d0d7de;
+}
+
+/* Column header row: Vserver  Volume  Aggregate  State (dark, bold) */
+.token.ontap-output-header {
+  color: #383a42;
+  font-weight: bold;
+}
+
+/* Count footer: "2 entries were displayed." (gray, italic) */
+.token.ontap-output-count {
+  color: #a0a1a7;
+  font-style: italic;
+}

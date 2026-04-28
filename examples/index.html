@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>prism-ontap-cli — Syntax Highlighting Demo</title>
+
+  <!-- Prism.js core (from CDN) -->
+  <link id="prism-theme" rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+
+  <!-- prism-ontap-cli standalone build + dark theme (default) -->
+  <script src="../standalone/prism-ontap-cli.js"></script>
+  <link id="ontap-theme" rel="stylesheet" href="../themes/prism-ontap-dark.css" />
+
+  <style>
+    :root {
+      --bg: #1c1e26;
+      --surface: #21252b;
+      --text: #abb2bf;
+      --heading: #dcdfe4;
+      --accent: #61afef;
+      --muted: #5c6370;
+      --border: #3e4451;
+    }
+
+    .light-mode {
+      --bg: #f0f0f0;
+      --surface: #ffffff;
+      --text: #383a42;
+      --heading: #1a1b1e;
+      --accent: #0184bc;
+      --muted: #a0a1a7;
+      --border: #d0d7de;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.6;
+      padding: 2rem 1rem;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .container { max-width: 900px; margin: 0 auto; }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+    }
+
+    header h1 {
+      font-size: 1.6rem;
+      color: var(--heading);
+      font-family: "JetBrains Mono", monospace;
+    }
+
+    header h1 span { color: var(--accent); }
+
+    header p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-top: 0.35rem;
+    }
+
+    .theme-toggle {
+      flex-shrink: 0;
+      background: var(--border);
+      color: var(--text);
+      border: none;
+      padding: 0.45rem 1rem;
+      border-radius: 0.4rem;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-family: inherit;
+      transition: background 0.2s;
+    }
+
+    .theme-toggle:hover { background: var(--accent); color: #fff; }
+
+    section { margin-bottom: 2.5rem; }
+
+    section h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--heading);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    section h2 .badge {
+      font-size: 0.7rem;
+      background: var(--accent);
+      color: #fff;
+      padding: 0.15rem 0.5rem;
+      border-radius: 999px;
+      font-weight: 500;
+    }
+
+    section p.desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 0.75rem;
+    }
+
+    /* Prism overrides for the demo page containers */
+    pre[class*="language-"] {
+      border-radius: 0.5rem;
+    }
+
+    .token-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .token-legend .swatch {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.75rem;
+      color: var(--text);
+    }
+
+    .token-legend .swatch span {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <header>
+      <div>
+        <h1>prism-<span>ontap-cli</span></h1>
+        <p>Prism.js syntax highlighting for NetApp ONTAP 9.x CLI</p>
+      </div>
+      <button class="theme-toggle" onclick="toggleTheme()">☀ Light mode</button>
+    </header>
+
+    <!-- ── Example 1: Simple show command with tabular output ─────────── -->
+    <section>
+      <h2>Volume show <span class="badge">simple command + table output</span></h2>
+      <p class="desc">
+        Standard admin prompt, a two-word command, and a tabular result with
+        column headers, separator, data rows, and a count line.
+      </p>
+<pre><code class="language-ontap-cli">cluster1::> volume show
+  Vserver   Volume       Aggregate    State      Type       Size  Available Used%
+  --------- ------------ ------------ ---------- ---- ---------- --------- -----
+  vs0       vol0         aggr0        online     RW       1.0GB    972.7MB    5%
+  vs1       vol1         aggr1        online     RW       2.0GB      1.8GB   10%
+  vs1       vol2         aggr1        offline    RW       5.0GB      4.5GB   10%
+3 entries were displayed.</code></pre>
+    </section>
+
+    <!-- ── Example 2: Parameterized query ─────────────────────────────── -->
+    <section>
+      <h2>Security audit log show <span class="badge">multiple params + complex values</span></h2>
+      <p class="desc">
+        Multiple parameter flags with different value types: a wildcard IP,
+        pipe-separated state alternatives, a wildcard string, and a quoted timestamp.
+      </p>
+<pre><code class="language-ontap-cli">cluster1::> security audit log show -fields application,location,state,input,message -location 10.60.* -state Error|Success -input v*|st*
+timestamp                  node  application location     input                                      state   message
+-------------------------- ----- ----------- ------------ ------------------------------------------ ------- -------
+"Fri Jul 17 11:32:44 2020" node1 ssh         10.60.250.79 storage aggregate create test -diskcount 5 Success -
+"Fri Jul 17 11:36:47 2020" node1 ssh         10.60.250.79 vserver create vs1                         Success -
+"Fri Jul 17 11:38:08 2020" node1 ssh         10.60.250.79 volume create vol1 -aggregate test         Success -
+3 entries were displayed.</code></pre>
+    </section>
+
+    <!-- ── Example 3: Elevated privilege prompt ───────────────────────── -->
+    <section>
+      <h2>Advanced privilege mode <span class="badge">elevated prompt</span></h2>
+      <p class="desc">
+        The <code>::*&gt;</code> prompt is rendered in bold white to signal elevated
+        privilege — visually distinct without conflicting with other token colors.
+      </p>
+<pre><code class="language-ontap-cli">cluster1::> set advanced
+Warning: These advanced commands are potentially dangerous; use them only when
+         directed to do so by NetApp personnel.
+Do you want to continue? {y|n}: y
+
+cluster1::*> storage aggregate show-space -aggregate aggr1
+                                           Aggregate : aggr1
+                                               State : online
+                                 Total Physical Size : 8.17TB
+                                  Used Physical Size : 6.22TB
+                             Available Physical Size : 1.95TB
+
+cluster1::*> set admin</code></pre>
+    </section>
+
+    <!-- ── Example 4: Vserver context ─────────────────────────────────── -->
+    <section>
+      <h2>Vserver context <span class="badge">vserver prompt</span></h2>
+      <p class="desc">
+        SVM (vserver) administrator session — the prompt reflects the vserver name.
+        Boolean state values, size values, and IP addresses each have distinct colors.
+      </p>
+<pre><code class="language-ontap-cli">vs1::> vserver show -fields vserver-type,language,allowed-protocols
+vserver  vserver-type  language  allowed-protocols
+-------- ------------- --------- -----------------
+vs1      data          c.utf_8   nfs,cifs
+1 entry was displayed.
+
+vs1::> volume create -volume testvol -aggregate aggr1 -size 10GB -state online
+[Job 42] Job succeeded: Successful</code></pre>
+    </section>
+
+    <!-- ── Example 5: Network interface show ─────────────────────────── -->
+    <section>
+      <h2>Network interface show <span class="badge">IP addresses + boolean status</span></h2>
+      <p class="desc">
+        Demonstrates IP address highlighting (cyan), boolean status values (orange),
+        and a multi-column table with multiple data rows.
+      </p>
+<pre><code class="language-ontap-cli">cluster1::> network interface show -vserver vs1 -status-oper up
+            Logical    Status     Network            Current       Current Is
+Vserver     Interface  Admin/Oper Address/Mask       Node          Port    Home
+----------- ---------- ---------- ------------------ ------------- ------- ----
+vs1         data_lif1    up/up    192.168.1.100/24   node1         e0a     true
+vs1         data_lif2    up/up    192.168.1.101/24   node2         e0b     true
+2 entries were displayed.</code></pre>
+    </section>
+
+    <!-- ── Token color legend ─────────────────────────────────────────── -->
+    <section>
+      <h2>Token legend</h2>
+      <p class="desc">All token classes emitted by the language definition.</p>
+      <div class="token-legend" id="legend"></div>
+    </section>
+
+    <footer>
+      <p>
+        <a href="https://github.com/pulkjr/prism-ontap-cli">prism-ontap-cli</a>
+        &nbsp;·&nbsp;
+        MIT License
+        &nbsp;·&nbsp;
+        Targets <a href="https://docs.netapp.com/us-en/ontap-cli/">ONTAP 9.x CLI</a>
+      </p>
+    </footer>
+
+  </div><!-- /.container -->
+
+  <script>
+    // ── Theme toggle ───────────────────────────────────────────────────────
+    let isDark = true;
+
+    function toggleTheme() {
+      isDark = !isDark;
+      const btn = document.querySelector('.theme-toggle');
+      const ontapThemeLink = document.getElementById('ontap-theme');
+      const prismThemeLink = document.getElementById('prism-theme');
+
+      if (isDark) {
+        document.body.classList.remove('light-mode');
+        ontapThemeLink.href = '../themes/prism-ontap-dark.css';
+        prismThemeLink.href =
+          'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css';
+        btn.textContent = '☀ Light mode';
+      } else {
+        document.body.classList.add('light-mode');
+        ontapThemeLink.href = '../themes/prism-ontap-light.css';
+        prismThemeLink.href =
+          'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css';
+        btn.textContent = '🌙 Dark mode';
+      }
+    }
+
+    // ── Token legend ───────────────────────────────────────────────────────
+    const tokenColors = [
+      { cls: 'ontap-prompt',            label: 'prompt (standard)',     dark: '#5c6370', light: '#a0a1a7' },
+      { cls: 'ontap-prompt-elevated',   label: 'prompt (elevated ::*>)',dark: '#dcdfe4', light: '#383a42', bold: true },
+      { cls: 'ontap-command',           label: 'command name',          dark: '#98c379', light: '#50a14f' },
+      { cls: 'ontap-param',             label: 'parameter flag (-name)',dark: '#c678dd', light: '#a626a4' },
+      { cls: 'ontap-value',             label: 'value (text)',          dark: '#e5c07b', light: '#986801' },
+      { cls: 'ontap-string',            label: 'value (quoted string)', dark: '#e5c07b', light: '#50a14f', italic: true },
+      { cls: 'ontap-boolean',           label: 'value (boolean/state)', dark: '#d19a66', light: '#c18401' },
+      { cls: 'ontap-ip',                label: 'value (IP address)',    dark: '#56b6c2', light: '#0184bc' },
+      { cls: 'ontap-size',              label: 'value (storage size)',  dark: '#61afef', light: '#0184bc' },
+      { cls: 'ontap-number',            label: 'value (number)',        dark: '#d19a66', light: '#986801' },
+      { cls: 'ontap-output-separator',  label: 'output separator',      dark: '#3e4451', light: '#d0d7de' },
+      { cls: 'ontap-output-header',     label: 'output column header',  dark: '#dcdfe4', light: '#383a42', bold: true },
+      { cls: 'ontap-output-count',      label: 'output count line',     dark: '#5c6370', light: '#a0a1a7', italic: true },
+    ];
+
+    function buildLegend() {
+      const legend = document.getElementById('legend');
+      legend.innerHTML = tokenColors.map(t => {
+        const color = isDark ? t.dark : t.light;
+        return `<div class="swatch">
+          <span style="background:${color};${t.bold ? 'outline:2px solid #555;' : ''}"></span>
+          <code class="token ${t.cls}" style="${t.italic ? 'font-style:italic;' : ''}${t.bold ? 'font-weight:bold;' : ''}">${t.label}</code>
+        </div>`;
+      }).join('');
+    }
+
+    buildLegend();
+
+    // Re-run Prism after page load (it already auto-highlights, but this is
+    // a safety net in case content is dynamically added).
+    Prism.highlightAll();
+  </script>
+</body>
+</html>
