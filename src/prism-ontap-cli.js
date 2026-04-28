@@ -81,6 +81,11 @@ export default function defineOntapCli(Prism) {
             // Boolean / operational-state keywords.
             'ontap-boolean': /\b(?:true|false|yes|no|up|down|enabled|disabled|online|offline|pending|success|error|available|unavailable)\b/i,
 
+            // WWPN/WWNN (must precede ontap-mac — 8 colon-pairs would be partially
+            // consumed by the 6-pair MAC pattern otherwise).
+            // e.g. 20:00:00:a0:98:0c:b0:eb
+            'ontap-wwpn': /\b(?:[0-9a-fA-F]{2}:){7}[0-9a-fA-F]{2}\b/,
+
             // MAC addresses (must precede ontap-ip to avoid colon-hex ambiguity).
             // Colon:  00:50:56:aa:bb:cc
             // Dash:   00-50-56-aa-bb-cc

@@ -206,6 +206,21 @@ test('MAC address (Cisco dot notation) is tokenized as ontap-mac', () => {
   assert.equal(mac.text, '0050.56aa.bbcc');
 });
 
+test('WWPN is tokenized as ontap-wwpn', () => {
+  const tokens = tokenize('cluster1::> vserver fcp show -target-name 20:00:00:a0:98:0c:b0:eb');
+  const leaves = collectLeaves(tokens);
+  const wwpn = leaves.find(l => l.type === 'ontap-wwpn');
+  assert.ok(wwpn, 'Should produce an ontap-wwpn token');
+  assert.equal(wwpn.text, '20:00:00:a0:98:0c:b0:eb');
+});
+
+test('WWPN is not tokenized as ontap-mac', () => {
+  const tokens = tokenize('cluster1::> vserver fcp show -target-name 20:00:00:a0:98:0c:b0:eb');
+  const leaves = collectLeaves(tokens);
+  const mac = leaves.find(l => l.type === 'ontap-mac');
+  assert.ok(!mac, 'WWPN should not produce an ontap-mac token');
+});
+
 test('storage size is tokenized as ontap-size', () => {
   const tokens = tokenize('cluster1::> volume create vol1 -aggregate aggr1 -size 100GB');
   const leaves = collectLeaves(tokens);

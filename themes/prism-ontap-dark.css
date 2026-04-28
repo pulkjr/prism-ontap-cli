@@ -88,6 +88,11 @@ pre[class*="language-ontap-cli"] {
   color: #56b6c2;
 }
 
+/* WWPN/WWNN: 20:00:00:a0:98:0c:b0:eb (cyan, same as ontap-ip) */
+.token.ontap-wwpn {
+  color: #56b6c2;
+}
+
 /* MAC addresses: 00:50:56:aa:bb:cc, 0050.56aa.bbcc (light purple) */
 .token.ontap-mac {
   color: #c678dd;
