@@ -237,10 +237,11 @@ vs1::> volume create -volume testvol -aggregate aggr1 -size 10GB -state online
 
     <!-- ── Example 5: Network interface show ─────────────────────────── -->
     <section>
-      <h2>Network interface show <span class="badge">IP addresses + boolean status</span></h2>
+      <h2>Network interface show <span class="badge">IPv4 + IPv6 addresses</span></h2>
       <p class="desc">
-        Demonstrates IP address highlighting (cyan), boolean status values (orange),
-        and a multi-column table with multiple data rows.
+        IPv4 and IPv6 addresses (including CIDR prefix) are highlighted in cyan.
+        The hyphenated subcommand <code>show-space</code> is correctly tokenized
+        as part of the command name, not as a parameter.
       </p>
 <pre><code class="language-ontap-cli">cluster1::> network interface show -vserver vs1 -status-oper up
             Logical    Status     Network            Current       Current Is
@@ -248,7 +249,58 @@ Vserver     Interface  Admin/Oper Address/Mask       Node          Port    Home
 ----------- ---------- ---------- ------------------ ------------- ------- ----
 vs1         data_lif1    up/up    192.168.1.100/24   node1         e0a     true
 vs1         data_lif2    up/up    192.168.1.101/24   node2         e0b     true
+2 entries were displayed.
+
+cluster1::> network interface show -vserver vs1 -address-family IPv6
+            Logical    Status     Network                    Current    Current Is
+Vserver     Interface  Admin/Oper Address/Mask               Node       Port    Home
+----------- ---------- ---------- -------------------------- ---------- ------- ----
+vs1         lif_ipv6_1   up/up    fd20:8b1e:b255:814e::1/64  node1      e0a     true
+vs1         lif_ipv6_2   up/up    2001:db8::2/64             node2      e0b     true
 2 entries were displayed.</code></pre>
+    </section>
+
+    <!-- ── Example 6: MAC addresses ──────────────────────────────────── -->
+    <section>
+      <h2>Network port show <span class="badge">MAC addresses</span></h2>
+      <p class="desc">
+        MAC addresses in colon-separated notation are highlighted in purple,
+        distinct from IP addresses and parameter flags.
+      </p>
+<pre><code class="language-ontap-cli">cluster1::> network port show -fields node,port,mac-address,link,speed
+node    port  mac-address        link  speed
+------- ----- ------------------ ----- -----
+node1   e0a   00:50:56:aa:11:22  up    1000
+node1   e0b   00:50:56:aa:11:23  up    1000
+node1   e0c   00:50:56:aa:11:24  up    1000
+node2   e0a   00:50:56:bb:33:44  up    1000
+node2   e0b   00:50:56:bb:33:45  up    1000
+5 entries were displayed.</code></pre>
+    </section>
+
+    <!-- ── Example 7: WWPN / WWNN ─────────────────────────────────────── -->
+    <section>
+      <h2>FCP adapter show <span class="badge">WWPN / WWNN</span></h2>
+      <p class="desc">
+        World Wide Port Names (WWPN) and World Wide Node Names (WWNN) are
+        highlighted in the same cyan as IP addresses. The 8-pair format is
+        correctly distinguished from 6-pair MAC addresses.
+      </p>
+<pre><code class="language-ontap-cli">cluster1::> vserver fcp show
+                                       Status
+Vserver   Target Name                  Admin
+--------- ---------------------------- ------
+vs0       20:00:00:a0:98:0c:b0:eb      up
+vs1       20:01:00:a0:98:0c:b0:eb      up
+2 entries were displayed.
+
+cluster1::> network fcp adapter show -fields node,adapter,state,fc-wwnn,fc-wwpn
+node    adapter  state  fc-wwnn                  fc-wwpn
+------- -------- ------ ------------------------ ------------------------
+node1   0a       online 20:00:00:a0:98:0c:b0:ea  20:01:00:a0:98:0c:b0:ea
+node1   0b       online 20:00:00:a0:98:0c:b0:eb  20:01:00:a0:98:0c:b0:eb
+node2   0a       online 20:00:00:a0:98:0c:b0:ec  20:01:00:a0:98:0c:b0:ec
+3 entries were displayed.</code></pre>
     </section>
 
     <!-- ── Token color legend ─────────────────────────────────────────── -->
@@ -305,6 +357,8 @@ vs1         data_lif2    up/up    192.168.1.101/24   node2         e0b     true
       { cls: 'ontap-string',            label: 'value (quoted string)', dark: '#e5c07b', light: '#50a14f', italic: true },
       { cls: 'ontap-boolean',           label: 'value (boolean/state)', dark: '#d19a66', light: '#c18401' },
       { cls: 'ontap-ip',                label: 'value (IP address)',    dark: '#56b6c2', light: '#0184bc' },
+      { cls: 'ontap-wwpn',              label: 'value (WWPN / WWNN)',   dark: '#56b6c2', light: '#0184bc' },
+      { cls: 'ontap-mac',               label: 'value (MAC address)',   dark: '#c678dd', light: '#a626a4' },
       { cls: 'ontap-size',              label: 'value (storage size)',  dark: '#61afef', light: '#0184bc' },
       { cls: 'ontap-number',            label: 'value (number)',        dark: '#d19a66', light: '#986801' },
       { cls: 'ontap-output-separator',  label: 'output separator',      dark: '#3e4451', light: '#d0d7de' },
